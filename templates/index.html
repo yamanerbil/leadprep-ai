@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LeadPrep AI - Company Analysis</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 600px;
+        width: 100%;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .logo {
+        font-size: 2.5rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+      }
+
+      .subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e1e5e9;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        width: 100%;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .spinner {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 10px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .result {
+        display: none;
+        margin-top: 30px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+      }
+
+      .result h3 {
+        color: #333;
+        margin-bottom: 15px;
+      }
+
+      .company-info {
+        margin-bottom: 20px;
+      }
+
+      .company-info p {
+        margin: 5px 0;
+        color: #666;
+      }
+
+      .leaders-list {
+        list-style: none;
+      }
+
+      .leader-item {
+        background: white;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #e1e5e9;
+      }
+
+      .leader-name {
+        font-weight: 600;
+        color: #333;
+        font-size: 1.1rem;
+      }
+
+      .leader-title {
+        color: #667eea;
+        font-size: 0.9rem;
+        margin-top: 5px;
+      }
+
+      .error {
+        background: #fee;
+        color: #c33;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+        border-left: 4px solid #c33;
+      }
+
+      .example-urls {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f0f4ff;
+        border-radius: 8px;
+      }
+
+      .example-urls h4 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .example-url {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s ease;
+      }
+
+      .example-url:hover {
+        background: #5a6fd8;
+      }
+
+      .input-hint {
+        font-size: 0.85rem;
+        color: #888;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">LeadPrep AI</div>
+        <div class="subtitle">
+          Analyze company leadership for sales preparation
+        </div>
+      </div>
+
+      <form id="analysisForm">
+        <div class="form-group">
+          <label for="companyUrl" class="form-label"
+            >Company URL or Domain</label
+          >
+          <input
+            type="text"
+            id="companyUrl"
+            class="form-input"
+            placeholder="apple.com or https://www.apple.com"
+            required
+          />
+          <div class="input-hint">
+            You can enter just the domain (e.g., "apple.com") or a full URL
+          </div>
+        </div>
+
+        <button type="submit" class="btn" id="analyzeBtn">
+          Analyze Company
+        </button>
+      </form>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Analyzing company information...</p>
+      </div>
+
+      <div class="result" id="result"></div>
+
+      <div class="example-urls">
+        <h4>Try these example domains:</h4>
+        <div class="example-url" onclick="setUrl('apple.com')">Apple</div>
+        <div class="example-url" onclick="setUrl('microsoft.com')">
+          Microsoft
+        </div>
+        <div class="example-url" onclick="setUrl('google.com')">Google</div>
+        <div class="example-url" onclick="setUrl('amazon.com')">Amazon</div>
+        <div class="example-url" onclick="setUrl('meta.com')">Meta</div>
+      </div>
+    </div>
+
+    <script>
+      function normalizeUrl(input) {
+        let url = input.trim();
+
+        // If it doesn't start with http:// or https://, add https://
+        if (!url.match(/^https?:\/\//)) {
+          url = "https://" + url;
+        }
+
+        return url;
+      }
+
+      function setUrl(url) {
+        document.getElementById("companyUrl").value = url;
+      }
+
+      function showLoading() {
+        document.getElementById("loading").style.display = "block";
+        document.getElementById("result").style.display = "none";
+        document.getElementById("analyzeBtn").disabled = true;
+      }
+
+      function hideLoading() {
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("analyzeBtn").disabled = false;
+      }
+
+      function showResult(data) {
+        const resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = `
+                <h3>📊 Analysis Results</h3>
+                <div class="company-info">
+                    <p><strong>Domain:</strong> ${data.domain}</p>
+                    <p><strong>Source URL:</strong> ${data.source_url}</p>
+                </div>
+                <h4>👥 Key Leaders</h4>
+                <ul class="leaders-list">
+                    ${data.leaders
+                      .map(
+                        (leader) => `
+                        <li class="leader-item">
+                            <div class="leader-name">${leader.name}</div>
+                            <div class="leader-title">${leader.title}</div>
+                        </li>
+                    `
+                      )
+                      .join("")}
+                </ul>
+            `;
+        resultDiv.style.display = "block";
+      }
+
+      function showError(message) {
+        const resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = `
+                <div class="error">
+                    <strong>Error:</strong> ${message}
+                </div>
+            `;
+        resultDiv.style.display = "block";
+      }
+
+      document
+        .getElementById("analysisForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const input = document.getElementById("companyUrl").value.trim();
+          if (!input) return;
+
+          // Normalize the URL (add https:// if needed)
+          const url = normalizeUrl(input);
+
+          showLoading();
+
+          try {
+            const response = await fetch("/analyze", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ url }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+              showResult(data.data);
+            } else {
+              showError(data.error || "An error occurred");
+            }
+          } catch (error) {
+            showError("Network error. Please try again.");
+          } finally {
+            hideLoading();
+          }
+        });
+
+      // Allow Enter key to submit the form
+      document
+        .getElementById("companyUrl")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            document
+              .getElementById("analysisForm")
+              .dispatchEvent(new Event("submit"));
+          }
+        });
+    </script>
+  </body>
+</html>
