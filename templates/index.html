@@ -3,287 +3,288 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LeadPrep AI - Company Analysis</title>
+    <title>LeadPrep AI</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Oxygen, Ubuntu, Cantarell, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #f6f8fa;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 20px;
+        margin: 0;
       }
-
-      .container {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        padding: 40px;
-        max-width: 600px;
+      .main-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+        padding: 32px 24px 24px 24px;
+        max-width: 500px;
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
       }
-
-      .header {
-        text-align: center;
-        margin-bottom: 30px;
-      }
-
       .logo {
-        font-size: 2.5rem;
-        font-weight: bold;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 10px;
-      }
-
-      .subtitle {
-        color: #666;
-        font-size: 1.1rem;
-        margin-bottom: 20px;
-      }
-
-      .form-group {
-        margin-bottom: 25px;
-      }
-
-      .form-label {
-        display: block;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -1px;
+        color: #3b3b3b;
+        text-align: center;
         margin-bottom: 8px;
-        font-weight: 600;
-        color: #333;
       }
-
-      .form-input {
-        width: 100%;
-        padding: 15px;
-        border: 2px solid #e1e5e9;
-        border-radius: 10px;
-        font-size: 16px;
-        transition: border-color 0.3s ease;
+      .subtitle {
+        color: #6b7280;
+        font-size: 1rem;
+        text-align: center;
+        margin-bottom: 8px;
       }
-
-      .form-input:focus {
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .input-label {
+        font-size: 0.95rem;
+        color: #444;
+        font-weight: 500;
+      }
+      .input-field {
+        padding: 14px 12px;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 1rem;
         outline: none;
-        border-color: #667eea;
+        transition: border 0.2s;
       }
-
-      .btn {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
+      .input-field:focus {
+        border-color: #6366f1;
+      }
+      .analyze-btn {
+        margin-top: 8px;
+        padding: 14px 0;
+        background: #6366f1;
+        color: #fff;
         border: none;
-        padding: 15px 30px;
-        border-radius: 10px;
-        font-size: 16px;
+        border-radius: 8px;
+        font-size: 1.1rem;
         font-weight: 600;
         cursor: pointer;
-        transition: transform 0.2s ease;
-        width: 100%;
+        transition: background 0.2s;
       }
-
-      .btn:hover {
-        transform: translateY(-2px);
-      }
-
-      .btn:disabled {
-        opacity: 0.6;
+      .analyze-btn:disabled {
+        background: #a5b4fc;
         cursor: not-allowed;
-        transform: none;
       }
-
-      .loading {
-        display: none;
-        text-align: center;
-        margin: 20px 0;
+      .status-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-left: 8px;
       }
-
-      .spinner {
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #667eea;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 10px;
+      .badge-llm {
+        background: #e0f2fe;
+        color: #0369a1;
       }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
+      .badge-cache {
+        background: #fef9c3;
+        color: #a16207;
       }
-
-      .result {
-        display: none;
-        margin-top: 30px;
-        padding: 20px;
-        background: #f8f9fa;
+      .badge-db {
+        background: #e0e7ff;
+        color: #3730a3;
+      }
+      .badge-fake {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+      .result-card {
+        background: #f9fafb;
         border-radius: 10px;
-        border-left: 4px solid #667eea;
+        padding: 18px 14px;
+        margin-top: 8px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
       }
-
-      .result h3 {
-        color: #333;
-        margin-bottom: 15px;
-      }
-
-      .company-info {
-        margin-bottom: 20px;
-      }
-
-      .company-info p {
-        margin: 5px 0;
-        color: #666;
-      }
-
       .leaders-list {
         list-style: none;
+        padding: 0;
+        margin: 0;
+        margin-top: 10px;
       }
-
       .leader-item {
-        background: white;
-        padding: 15px;
-        margin: 10px 0;
-        border-radius: 8px;
-        border: 1px solid #e1e5e9;
+        padding: 8px 0;
+        border-bottom: 1px solid #ececec;
+        font-size: 1rem;
+        color: #222;
       }
-
-      .leader-name {
-        font-weight: 600;
-        color: #333;
-        font-size: 1.1rem;
+      .leader-item:last-child {
+        border-bottom: none;
       }
-
       .leader-title {
-        color: #667eea;
-        font-size: 0.9rem;
-        margin-top: 5px;
+        color: #6366f1;
+        font-size: 0.92rem;
+        margin-left: 4px;
       }
-
-      .error {
-        background: #fee;
-        color: #c33;
-        padding: 15px;
+      .leader-selection {
+        margin-top: 16px;
+        padding: 16px;
+        background: #f8fafc;
         border-radius: 8px;
-        margin-top: 20px;
-        border-left: 4px solid #c33;
+        border: 1px solid #e2e8f0;
       }
-
-      .example-urls {
-        margin-top: 20px;
-        padding: 15px;
-        background: #f0f4ff;
-        border-radius: 8px;
-      }
-
-      .example-urls h4 {
-        color: #333;
-        margin-bottom: 10px;
-      }
-
-      .example-url {
-        display: inline-block;
-        background: #667eea;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        margin: 5px;
+      .leader-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 8px 0;
+        padding: 8px;
+        border-radius: 6px;
         cursor: pointer;
-        font-size: 0.9rem;
-        transition: background 0.2s ease;
+        transition: background 0.2s;
       }
-
-      .example-url:hover {
-        background: #5a6fd8;
+      .leader-checkbox:hover {
+        background: #f1f5f9;
       }
-
-      .input-hint {
+      .leader-checkbox input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #6366f1;
+      }
+      .search-interviews-btn {
+        margin-top: 12px;
+        padding: 12px 20px;
+        background: #10b981;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+        width: 100%;
+      }
+      .search-interviews-btn:disabled {
+        background: #6ee7b7;
+        cursor: not-allowed;
+      }
+      .interviews-section {
+        margin-top: 16px;
+      }
+      .interview-item {
+        padding: 12px;
+        margin: 8px 0;
+        background: #fff;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+      }
+      .interview-title {
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 4px;
+      }
+      .interview-meta {
         font-size: 0.85rem;
-        color: #888;
-        margin-top: 5px;
+        color: #64748b;
+        margin-bottom: 4px;
+      }
+      .interview-link {
+        color: #6366f1;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+      .interview-link:hover {
+        text-decoration: underline;
+      }
+      .loading,
+      .error {
+        text-align: center;
+        margin-top: 12px;
+        font-size: 1rem;
+      }
+      .loading {
+        color: #6366f1;
+      }
+      .error {
+        color: #b91c1c;
+        background: #fee2e2;
+        border-radius: 6px;
+        padding: 10px;
+      }
+      @media (max-width: 500px) {
+        .main-card {
+          padding: 18px 4vw;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="header">
-        <div class="logo">LeadPrep AI</div>
-        <div class="subtitle">
-          Analyze company leadership for sales preparation
-        </div>
+    <div class="main-card">
+      <div class="logo">LeadPrep AI</div>
+      <div class="subtitle">
+        Find company leaders and their recent interviews
       </div>
-
       <form id="analysisForm">
-        <div class="form-group">
-          <label for="companyUrl" class="form-label"
+        <div class="input-group">
+          <label for="companyUrl" class="input-label"
             >Company URL or Domain</label
           >
           <input
             type="text"
             id="companyUrl"
-            class="form-input"
-            placeholder="apple.com or https://www.apple.com"
+            class="input-field"
+            placeholder="e.g. tesla.com or https://tesla.com"
             required
           />
-          <div class="input-hint">
-            You can enter just the domain (e.g., "apple.com") or a full URL
-          </div>
         </div>
-
-        <button type="submit" class="btn" id="analyzeBtn">
+        <button type="submit" class="analyze-btn" id="analyzeBtn">
           Analyze Company
         </button>
       </form>
-
-      <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <p>Analyzing company information...</p>
+      <div class="loading" id="loading" style="display: none">
+        Analyzing company...
       </div>
-
-      <div class="result" id="result"></div>
-
-      <div class="example-urls">
-        <h4>Try these example domains:</h4>
-        <div class="example-url" onclick="setUrl('apple.com')">Apple</div>
-        <div class="example-url" onclick="setUrl('microsoft.com')">
-          Microsoft
-        </div>
-        <div class="example-url" onclick="setUrl('google.com')">Google</div>
-        <div class="example-url" onclick="setUrl('amazon.com')">Amazon</div>
-        <div class="example-url" onclick="setUrl('meta.com')">Meta</div>
+      <div class="error" id="error" style="display: none"></div>
+      <div class="result-card" id="result" style="display: none"></div>
+      <div class="leader-selection" id="leaderSelection" style="display: none">
+        <h4 style="margin: 0 0 12px 0; color: #374151">
+          Select leaders to search for interviews:
+        </h4>
+        <div id="leaderCheckboxes"></div>
+        <button class="search-interviews-btn" id="searchInterviewsBtn" disabled>
+          Search Recent Interviews
+        </button>
+      </div>
+      <div
+        class="interviews-section"
+        id="interviewsSection"
+        style="display: none"
+      >
+        <h4 style="margin: 0 0 12px 0; color: #374151">
+          Recent Interviews & Podcasts:
+        </h4>
+        <div id="interviewsResults"></div>
       </div>
     </div>
-
     <script>
+      let currentCompanyData = null;
+
       function normalizeUrl(input) {
         let url = input.trim();
-
-        // If it doesn't start with http:// or https://, add https://
         if (!url.match(/^https?:\/\//)) {
           url = "https://" + url;
         }
-
         return url;
-      }
-
-      function setUrl(url) {
-        document.getElementById("companyUrl").value = url;
       }
 
       function showLoading() {
         document.getElementById("loading").style.display = "block";
+        document.getElementById("error").style.display = "none";
         document.getElementById("result").style.display = "none";
+        document.getElementById("leaderSelection").style.display = "none";
+        document.getElementById("interviewsSection").style.display = "none";
         document.getElementById("analyzeBtn").disabled = true;
       }
 
@@ -292,65 +293,180 @@
         document.getElementById("analyzeBtn").disabled = false;
       }
 
-      function showResult(data) {
-        const resultDiv = document.getElementById("result");
-        resultDiv.innerHTML = `
-                <h3>📊 Analysis Results</h3>
-                <div class="company-info">
-                    <p><strong>Domain:</strong> ${data.domain}</p>
-                    <p><strong>Source URL:</strong> ${data.source_url}</p>
-                </div>
-                <h4>👥 Key Leaders</h4>
-                <ul class="leaders-list">
-                    ${data.leaders
-                      .map(
-                        (leader) => `
-                        <li class="leader-item">
-                            <div class="leader-name">${leader.name}</div>
-                            <div class="leader-title">${leader.title}</div>
-                        </li>
-                    `
-                      )
-                      .join("")}
-                </ul>
-            `;
-        resultDiv.style.display = "block";
+      function showError(message) {
+        document.getElementById("error").innerText = message;
+        document.getElementById("error").style.display = "block";
+        document.getElementById("result").style.display = "none";
+        document.getElementById("leaderSelection").style.display = "none";
+        document.getElementById("interviewsSection").style.display = "none";
       }
 
-      function showError(message) {
-        const resultDiv = document.getElementById("result");
-        resultDiv.innerHTML = `
-                <div class="error">
-                    <strong>Error:</strong> ${message}
+      function showResult(data) {
+        currentCompanyData = data;
+
+        const badge =
+          data.data_source === "llm_extraction"
+            ? '<span class="status-badge badge-llm">LLM Analysis</span>'
+            : data.data_source === "database"
+            ? '<span class="status-badge badge-db">Database</span>'
+            : data.data_source === "fake_data"
+            ? '<span class="status-badge badge-fake">Sample Data</span>'
+            : '<span class="status-badge badge-cache">Cache</span>';
+
+        let html = `<div><b>Domain:</b> ${data.domain} ${badge}</div>`;
+        html += `<div style='margin-top:8px;'><b>Leaders Found:</b></div>`;
+        html += `<ul class='leaders-list'>`;
+        html += data.leaders
+          .map(
+            (l) =>
+              `<li class='leader-item'><span>${l.name}</span><span class='leader-title'>${l.title}</span></li>`
+          )
+          .join("");
+        html += `</ul>`;
+
+        document.getElementById("result").innerHTML = html;
+        document.getElementById("result").style.display = "block";
+        document.getElementById("error").style.display = "none";
+
+        showLeaderSelection(data.leaders);
+      }
+
+      function showLeaderSelection(leaders) {
+        const container = document.getElementById("leaderCheckboxes");
+        container.innerHTML = "";
+
+        leaders.forEach((leader, index) => {
+          const div = document.createElement("div");
+          div.className = "leader-checkbox";
+          div.innerHTML = `
+            <input type="checkbox" id="leader_${index}" value="${leader.name}" checked>
+            <label for="leader_${index}">
+              <strong>${leader.name}</strong> - ${leader.title}
+            </label>
+          `;
+          container.appendChild(div);
+        });
+
+        document.getElementById("leaderSelection").style.display = "block";
+        updateSearchButton();
+      }
+
+      function updateSearchButton() {
+        const checkboxes = document.querySelectorAll(
+          '#leaderCheckboxes input[type="checkbox"]'
+        );
+        const checkedCount = Array.from(checkboxes).filter(
+          (cb) => cb.checked
+        ).length;
+        const btn = document.getElementById("searchInterviewsBtn");
+
+        btn.disabled = checkedCount === 0;
+        btn.textContent =
+          checkedCount === 0
+            ? "Select at least one leader"
+            : `Search Interviews (${checkedCount} leaders)`;
+      }
+
+      function getSelectedLeaders() {
+        const checkboxes = document.querySelectorAll(
+          '#leaderCheckboxes input[type="checkbox"]:checked'
+        );
+        return Array.from(checkboxes).map((cb) => cb.value);
+      }
+
+      async function searchInterviews() {
+        if (!currentCompanyData) return;
+
+        const selectedLeaders = getSelectedLeaders();
+        if (selectedLeaders.length === 0) {
+          showError("Please select at least one leader");
+          return;
+        }
+
+        const btn = document.getElementById("searchInterviewsBtn");
+        btn.disabled = true;
+        btn.textContent = "Searching...";
+
+        try {
+          const response = await fetch("/search-interviews", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              leaders: selectedLeaders.map((name) => ({ name })),
+              company_name: currentCompanyData.domain.split(".")[0],
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            showInterviewResults(data.data);
+          } else {
+            showError(data.error || "Failed to search interviews");
+          }
+        } catch (error) {
+          showError("Network error. Please try again.");
+        } finally {
+          btn.disabled = false;
+          btn.textContent = `Search Interviews (${selectedLeaders.length} leaders)`;
+        }
+      }
+
+      function showInterviewResults(data) {
+        const container = document.getElementById("interviewsResults");
+        container.innerHTML = "";
+
+        let totalInterviews = 0;
+
+        Object.entries(data.interviews).forEach(([leaderName, interviews]) => {
+          if (interviews.length > 0) {
+            const leaderDiv = document.createElement("div");
+            leaderDiv.style.marginBottom = "20px";
+
+            let html = `<h5 style="margin: 0 0 8px 0; color: #6366f1;">${leaderName}</h5>`;
+
+            interviews.forEach((interview) => {
+              const date = new Date(
+                interview.published_at
+              ).toLocaleDateString();
+              html += `
+                <div class="interview-item">
+                  <div class="interview-title">${interview.title}</div>
+                  <div class="interview-meta">${interview.channel_title} • ${date}</div>
+                  <a href="${interview.url}" target="_blank" class="interview-link">Watch on YouTube</a>
                 </div>
-            `;
-        resultDiv.style.display = "block";
+              `;
+              totalInterviews++;
+            });
+
+            leaderDiv.innerHTML = html;
+            container.appendChild(leaderDiv);
+          }
+        });
+
+        if (totalInterviews === 0) {
+          container.innerHTML =
+            '<p style="color: #6b7280; text-align: center;">No recent interviews found for the selected leaders.</p>';
+        }
+
+        document.getElementById("interviewsSection").style.display = "block";
       }
 
       document
         .getElementById("analysisForm")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
-
           const input = document.getElementById("companyUrl").value.trim();
           if (!input) return;
-
-          // Normalize the URL (add https:// if needed)
           const url = normalizeUrl(input);
-
           showLoading();
-
           try {
             const response = await fetch("/analyze", {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ url }),
             });
-
             const data = await response.json();
-
             if (response.ok && data.success) {
               showResult(data.data);
             } else {
@@ -363,17 +479,18 @@
           }
         });
 
-      // Allow Enter key to submit the form
       document
-        .getElementById("companyUrl")
-        .addEventListener("keypress", function (e) {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            document
-              .getElementById("analysisForm")
-              .dispatchEvent(new Event("submit"));
-          }
-        });
+        .getElementById("searchInterviewsBtn")
+        .addEventListener("click", searchInterviews);
+
+      document.addEventListener("change", function (e) {
+        if (
+          e.target.type === "checkbox" &&
+          e.target.closest("#leaderCheckboxes")
+        ) {
+          updateSearchButton();
+        }
+      });
     </script>
   </body>
 </html>

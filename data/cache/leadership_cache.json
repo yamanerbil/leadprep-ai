@@ -1,0 +1,182 @@
+{
+  "de24b5571deaea7cf4b2a5c00ef66fb7": {
+    "leaders": [
+      {
+        "id": 1,
+        "name": "Tim Cook",
+        "title": "CEO"
+      },
+      {
+        "id": 2,
+        "name": "Jeff Williams",
+        "title": "COO"
+      }
+    ],
+    "timestamp": "2025-06-20T16:15:11.452664",
+    "company_url": "apple.com"
+  },
+  "ff5c054c7cd6924c570f944007ccf076": {
+    "leaders": [
+      {
+        "id": 3,
+        "name": "Satya Nadella",
+        "title": "CEO"
+      },
+      {
+        "id": 4,
+        "name": "Brad Smith",
+        "title": "President"
+      }
+    ],
+    "timestamp": "2025-06-20T16:15:11.525675",
+    "company_url": "microsoft.com"
+  },
+  "1d5920f4b44b27a802bd77c4f0536f5a": {
+    "leaders": [
+      {
+        "id": 5,
+        "name": "Sundar Pichai",
+        "title": "CEO"
+      },
+      {
+        "id": 6,
+        "name": "Ruth Porat",
+        "title": "CFO"
+      }
+    ],
+    "timestamp": "2025-06-20T16:15:11.595688",
+    "company_url": "google.com"
+  },
+  "e7417e450f1bc9f0dfd1f627ac0de643": {
+    "leaders": [
+      {
+        "name": "Elon Musk",
+        "title": "CEO"
+      },
+      {
+        "name": "Zach Kirkhorn",
+        "title": "CFO"
+      },
+      {
+        "name": "Drew Baglino",
+        "title": "CTO"
+      },
+      {
+        "name": "Vaibhav Taneja",
+        "title": "Chief Accounting Officer"
+      },
+      {
+        "name": "Jerome Guillen",
+        "title": "President, Automotive"
+      },
+      {
+        "name": "Andrew D. Baglino",
+        "title": "Senior Vice President, Powertrain and Energy Engineering"
+      },
+      {
+        "name": "Laurie Yoler",
+        "title": "Independent Director"
+      },
+      {
+        "name": "Robyn M. Denholm",
+        "title": "Independent Chairman of the Board"
+      },
+      {
+        "name": "Hiromichi Mizuno",
+        "title": "Independent Director"
+      },
+      {
+        "name": "James Murdoch",
+        "title": "Independent Director"
+      },
+      {
+        "name": "Kimbal Musk",
+        "title": "Director"
+      },
+      {
+        "name": "Antonio J. Gracias",
+        "title": "Independent Director"
+      },
+      {
+        "name": "Kathleen Wilson-Thompson",
+        "title": "Independent Director"
+      },
+      {
+        "name": "Yoshimitsu Goto",
+        "title": "Director, Senior Vice President, CFO of SoftBank Group Corp."
+      },
+      {
+        "name": "Martin Viecha",
+        "title": "Senior Director of Investor Relations"
+      }
+    ],
+    "timestamp": "2025-06-20T16:15:44.203256",
+    "company_url": "tesla.com"
+  },
+  "3115ec44978a68bee01bdeda80b94eab": {
+    "leaders": [
+      {
+        "name": "Rob Pierre",
+        "title": "CEO"
+      },
+      {
+        "name": "Chris Lee",
+        "title": "CFO"
+      },
+      {
+        "name": "James Parker",
+        "title": "CTO"
+      },
+      {
+        "name": "Hannah Kimuyu",
+        "title": "Director of Paid Media"
+      },
+      {
+        "name": "Daniel Wilkinson",
+        "title": "CCO"
+      },
+      {
+        "name": "Ed Ball",
+        "title": "Senior Director of Strategy"
+      },
+      {
+        "name": "Nick Fawbert",
+        "title": "Global Head of Knowledge"
+      },
+      {
+        "name": "Anna Chandler",
+        "title": "COO"
+      },
+      {
+        "name": "Gareth Morgan",
+        "title": "Managing Director"
+      },
+      {
+        "name": "Alistair Rennie",
+        "title": "Managing Director"
+      },
+      {
+        "name": "Phil Bedford",
+        "title": "CRO"
+      },
+      {
+        "name": "Paul Walsh",
+        "title": "CIO"
+      },
+      {
+        "name": "Steve Wrigley",
+        "title": "CFO"
+      },
+      {
+        "name": "Tim Creak",
+        "title": "CFO"
+      },
+      {
+        "name": "Kevin Buerli",
+        "title": "General Manager"
+      }
+    ],
+    "timestamp": "2025-06-20T16:21:23.295854",
+    "company_url": "jellyfish.com"
+  }
+}

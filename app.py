@@ -40,6 +40,40 @@ def analyze_company():
     except Exception as e:
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
 
+@app.route('/search-interviews', methods=['POST'])
+def search_interviews():
+    """Search for interviews with selected leaders."""
+    try:
+        data = request.get_json()
+        leaders = data.get('leaders', [])
+        company_name = data.get('company_name', '')
+        
+        if not leaders:
+            return jsonify({'error': 'Please select at least one leader'}), 400
+        
+        if not company_name:
+            return jsonify({'error': 'Company name is required'}), 400
+        
+        # Import interview search functionality
+        try:
+            from interview_search import search_interviews_for_leaders
+            interview_results = search_interviews_for_leaders(leaders, company_name)
+            
+            return jsonify({
+                'success': True,
+                'data': {
+                    'company_name': company_name,
+                    'leaders': leaders,
+                    'interviews': interview_results
+                }
+            })
+            
+        except ImportError:
+            return jsonify({'error': 'Interview search module not available'}), 500
+        
+    except Exception as e:
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
+
 @app.route('/health')
 def health():
     """Health check endpoint."""
