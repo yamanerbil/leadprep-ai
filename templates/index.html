@@ -5,26 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LeadPrep AI</title>
     <style>
+      * { box-sizing: border-box; }
       body {
         background: #f6f8fa;
         font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
           Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         min-height: 100vh;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
         margin: 0;
+        padding: 32px 16px;
       }
       .main-card {
         background: #fff;
         border-radius: 16px;
         box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
         padding: 32px 24px 24px 24px;
-        max-width: 500px;
+        max-width: 640px;
         width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 24px;
+        gap: 20px;
       }
       .logo {
         font-size: 2rem;
@@ -32,51 +34,83 @@
         letter-spacing: -1px;
         color: #3b3b3b;
         text-align: center;
-        margin-bottom: 8px;
       }
       .subtitle {
         color: #6b7280;
         font-size: 1rem;
         text-align: center;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
       }
+
+      /* Tabs */
+      .tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid #e5e7eb;
+      }
+      .tab {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #6b7280;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: all 0.2s;
+      }
+      .tab:hover { color: #374151; }
+      .tab.active {
+        color: #6366f1;
+        border-bottom-color: #6366f1;
+      }
+      .tab-content { display: none; }
+      .tab-content.active { display: block; }
+
+      /* Forms */
       .input-group {
         display: flex;
         flex-direction: column;
         gap: 8px;
+        margin-bottom: 12px;
       }
+      .input-row {
+        display: flex;
+        gap: 8px;
+      }
+      .input-row .input-group { flex: 1; margin-bottom: 0; }
       .input-label {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         color: #444;
         font-weight: 500;
       }
       .input-field {
-        padding: 14px 12px;
+        padding: 12px;
         border: 1.5px solid #e5e7eb;
         border-radius: 8px;
-        font-size: 1rem;
+        font-size: 0.95rem;
         outline: none;
         transition: border 0.2s;
+        width: 100%;
       }
-      .input-field:focus {
-        border-color: #6366f1;
-      }
-      .analyze-btn {
-        margin-top: 8px;
-        padding: 14px 0;
-        background: #6366f1;
-        color: #fff;
+      .input-field:focus { border-color: #6366f1; }
+
+      /* Buttons */
+      .btn {
+        padding: 12px 0;
         border: none;
         border-radius: 8px;
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 600;
         cursor: pointer;
         transition: background 0.2s;
+        width: 100%;
       }
-      .analyze-btn:disabled {
-        background: #a5b4fc;
-        cursor: not-allowed;
-      }
+      .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+      .btn-primary { background: #6366f1; color: #fff; }
+      .btn-green { background: #10b981; color: #fff; }
+      .btn-amber { background: #f59e0b; color: #fff; }
+
+      /* Status */
       .status-badge {
         display: inline-block;
         padding: 2px 10px;
@@ -85,22 +119,12 @@
         font-weight: 500;
         margin-left: 8px;
       }
-      .badge-llm {
-        background: #e0f2fe;
-        color: #0369a1;
-      }
-      .badge-cache {
-        background: #fef9c3;
-        color: #a16207;
-      }
-      .badge-db {
-        background: #e0e7ff;
-        color: #3730a3;
-      }
-      .badge-fake {
-        background: #fee2e2;
-        color: #b91c1c;
-      }
+      .badge-llm { background: #e0f2fe; color: #0369a1; }
+      .badge-cache { background: #fef9c3; color: #a16207; }
+      .badge-db { background: #e0e7ff; color: #3730a3; }
+      .badge-fake { background: #fee2e2; color: #b91c1c; }
+
+      /* Result cards */
       .result-card {
         background: #f9fafb;
         border-radius: 10px;
@@ -111,68 +135,127 @@
       .leaders-list {
         list-style: none;
         padding: 0;
-        margin: 0;
-        margin-top: 10px;
+        margin: 8px 0 0;
       }
       .leader-item {
         padding: 8px 0;
         border-bottom: 1px solid #ececec;
-        font-size: 1rem;
+        font-size: 0.95rem;
         color: #222;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-      .leader-item:last-child {
-        border-bottom: none;
-      }
-      .leader-title {
+      .leader-item:last-child { border-bottom: none; }
+      .leader-title { color: #6366f1; font-size: 0.88rem; }
+      .leader-actions { display: flex; gap: 6px; }
+      .leader-btn {
+        padding: 4px 10px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        border: 1.5px solid #6366f1;
+        border-radius: 6px;
+        background: #fff;
         color: #6366f1;
-        font-size: 0.92rem;
-        margin-left: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
       }
-      .leader-selection {
+      .leader-btn:hover { background: #6366f1; color: #fff; }
+      .leader-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+      /* Research output */
+      .research-section {
+        margin-top: 16px;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .research-header {
+        background: #f8fafc;
+        padding: 12px 16px;
+        font-weight: 600;
+        color: #374151;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .research-body { padding: 16px; }
+      .signal-list { list-style: none; padding: 0; margin: 0; }
+      .signal-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #f3f4f6;
+        font-size: 0.9rem;
+      }
+      .signal-item:last-child { border-bottom: none; }
+      .signal-tag {
+        display: inline-block;
+        padding: 1px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        margin-right: 6px;
+      }
+      .tag-company { background: #dbeafe; color: #1e40af; }
+      .tag-person { background: #fce7f3; color: #9d174d; }
+      .tag-pain { background: #fef3c7; color: #92400e; }
+      .tag-hook { background: #d1fae5; color: #065f46; }
+      .tag-buying { background: #ede9fe; color: #5b21b6; }
+
+      /* Opener output */
+      .opener-box {
+        margin-top: 12px;
+        padding: 16px;
+        background: #fefce8;
+        border: 1px solid #fde68a;
+        border-radius: 10px;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+
+      /* Batch */
+      .upload-zone {
+        border: 2px dashed #d1d5db;
+        border-radius: 10px;
+        padding: 32px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #6b7280;
+      }
+      .upload-zone:hover { border-color: #6366f1; color: #6366f1; }
+      .upload-zone.dragover { border-color: #6366f1; background: #eef2ff; }
+      .batch-progress {
         margin-top: 16px;
         padding: 16px;
-        background: #f8fafc;
-        border-radius: 8px;
-        border: 1px solid #e2e8f0;
+        background: #f9fafb;
+        border-radius: 10px;
       }
-      .leader-checkbox {
-        display: flex;
-        align-items: center;
-        gap: 8px;
+      .progress-bar-bg {
+        height: 8px;
+        background: #e5e7eb;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 8px;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        background: #6366f1;
+        border-radius: 4px;
+        transition: width 0.3s;
+      }
+      .batch-result-item {
+        padding: 12px;
         margin: 8px 0;
-        padding: 8px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background 0.2s;
-      }
-      .leader-checkbox:hover {
-        background: #f1f5f9;
-      }
-      .leader-checkbox input[type="checkbox"] {
-        width: 16px;
-        height: 16px;
-        accent-color: #6366f1;
-      }
-      .search-interviews-btn {
-        margin-top: 12px;
-        padding: 12px 20px;
-        background: #10b981;
-        color: #fff;
-        border: none;
+        background: #fff;
+        border: 1px solid #e5e7eb;
         border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s;
-        width: 100%;
       }
-      .search-interviews-btn:disabled {
-        background: #6ee7b7;
-        cursor: not-allowed;
-      }
-      .interviews-section {
-        margin-top: 16px;
-      }
+      .batch-result-name { font-weight: 600; color: #1e293b; }
+      .batch-result-company { color: #6b7280; font-size: 0.88rem; }
+
+      /* Interviews */
       .interview-item {
         padding: 12px;
         margin: 8px 0;
@@ -180,317 +263,476 @@
         border-radius: 8px;
         border: 1px solid #e2e8f0;
       }
-      .interview-title {
+      .interview-title { font-weight: 600; color: #1e293b; margin-bottom: 4px; }
+      .interview-meta { font-size: 0.85rem; color: #64748b; margin-bottom: 4px; }
+      .interview-link { color: #6366f1; text-decoration: none; font-size: 0.9rem; }
+      .interview-link:hover { text-decoration: underline; }
+
+      .loading, .error { text-align: center; margin-top: 12px; font-size: 0.95rem; }
+      .loading { color: #6366f1; }
+      .error { color: #b91c1c; background: #fee2e2; border-radius: 6px; padding: 10px; }
+
+      .section-title {
+        font-size: 0.95rem;
         font-weight: 600;
-        color: #1e293b;
-        margin-bottom: 4px;
+        color: #374151;
+        margin: 16px 0 8px;
       }
-      .interview-meta {
-        font-size: 0.85rem;
-        color: #64748b;
-        margin-bottom: 4px;
-      }
-      .interview-link {
-        color: #6366f1;
-        text-decoration: none;
-        font-size: 0.9rem;
-      }
-      .interview-link:hover {
-        text-decoration: underline;
-      }
-      .loading,
-      .error {
-        text-align: center;
-        margin-top: 12px;
-        font-size: 1rem;
-      }
-      .loading {
-        color: #6366f1;
-      }
-      .error {
-        color: #b91c1c;
-        background: #fee2e2;
-        border-radius: 6px;
-        padding: 10px;
-      }
+
       @media (max-width: 500px) {
-        .main-card {
-          padding: 18px 4vw;
-        }
+        .main-card { padding: 18px 4vw; }
+        .input-row { flex-direction: column; }
       }
     </style>
   </head>
   <body>
     <div class="main-card">
       <div class="logo">LeadPrep AI</div>
-      <div class="subtitle">
-        Find company leaders and their recent interviews
+      <div class="subtitle">Research leads. Find signals. Generate openers.</div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="single">Single Lead</div>
+        <div class="tab" data-tab="batch">Batch Upload</div>
       </div>
-      <form id="analysisForm">
-        <div class="input-group">
-          <label for="companyUrl" class="input-label"
-            >Company URL or Domain</label
-          >
-          <input
-            type="text"
-            id="companyUrl"
-            class="input-field"
-            placeholder="e.g. tesla.com or https://tesla.com"
-            required
-          />
+
+      <!-- ====== SINGLE LEAD TAB ====== -->
+      <div class="tab-content active" id="tab-single">
+        <form id="analysisForm">
+          <div class="input-group">
+            <label for="companyUrl" class="input-label">Company URL or Domain</label>
+            <input type="text" id="companyUrl" class="input-field"
+                   placeholder="e.g. jellyfish.co or https://acme.com" required />
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label for="leadName" class="input-label">Lead Name (optional)</label>
+              <input type="text" id="leadName" class="input-field"
+                     placeholder="e.g. Jane Smith" />
+            </div>
+            <div class="input-group">
+              <label for="leadTitle" class="input-label">Title (optional)</label>
+              <input type="text" id="leadTitle" class="input-field"
+                     placeholder="e.g. VP of People" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" id="analyzeBtn">
+            Analyze Company
+          </button>
+        </form>
+
+        <div class="loading" id="loading" style="display: none">Analyzing company...</div>
+        <div class="error" id="error" style="display: none"></div>
+        <div class="result-card" id="result" style="display: none"></div>
+
+        <!-- Leaders with per-leader research buttons -->
+        <div id="leaderSection" style="display: none">
+          <div class="section-title">Leadership Team</div>
+          <ul class="leaders-list" id="leadersList"></ul>
         </div>
-        <button type="submit" class="analyze-btn" id="analyzeBtn">
-          Analyze Company
-        </button>
-      </form>
-      <div class="loading" id="loading" style="display: none">
-        Analyzing company...
+
+        <!-- Full research output -->
+        <div id="researchOutput" style="display: none"></div>
+
+        <!-- Opener output -->
+        <div id="openerOutput" style="display: none"></div>
       </div>
-      <div class="error" id="error" style="display: none"></div>
-      <div class="result-card" id="result" style="display: none"></div>
-      <div class="leader-selection" id="leaderSelection" style="display: none">
-        <h4 style="margin: 0 0 12px 0; color: #374151">
-          Select leaders to search for interviews:
-        </h4>
-        <div id="leaderCheckboxes"></div>
-        <button class="search-interviews-btn" id="searchInterviewsBtn" disabled>
-          Search Recent Interviews
-        </button>
-      </div>
-      <div
-        class="interviews-section"
-        id="interviewsSection"
-        style="display: none"
-      >
-        <h4 style="margin: 0 0 12px 0; color: #374151">
-          Recent Interviews & Podcasts:
-        </h4>
-        <div id="interviewsResults"></div>
+
+      <!-- ====== BATCH TAB ====== -->
+      <div class="tab-content" id="tab-batch">
+        <div class="upload-zone" id="uploadZone">
+          <div style="font-size: 1.5rem; margin-bottom: 8px;">Upload CSV</div>
+          <div style="font-size: 0.88rem;">
+            Drag & drop or click to select.<br/>
+            Required column: <b>company_domain</b><br/>
+            Optional: lead_name, lead_title, company_name, email, phone
+          </div>
+          <input type="file" id="csvFile" accept=".csv" style="display: none" />
+        </div>
+
+        <div id="batchProgress" style="display: none" class="batch-progress">
+          <div id="batchStatus">Processing...</div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="batchProgressBar" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div id="batchResults" style="display: none"></div>
       </div>
     </div>
-    <script>
-      let currentCompanyData = null;
 
+    <script>
+      // ---- State ----
+      let currentCompanyData = null;
+      let currentResearch = null;
+
+      // ---- Tabs ----
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+        });
+      });
+
+      // ---- Helpers ----
       function normalizeUrl(input) {
         let url = input.trim();
-        if (!url.match(/^https?:\/\//)) {
-          url = "https://" + url;
-        }
+        if (!url.match(/^https?:\/\//)) url = 'https://' + url;
         return url;
       }
 
-      function showLoading() {
-        document.getElementById("loading").style.display = "block";
-        document.getElementById("error").style.display = "none";
-        document.getElementById("result").style.display = "none";
-        document.getElementById("leaderSelection").style.display = "none";
-        document.getElementById("interviewsSection").style.display = "none";
-        document.getElementById("analyzeBtn").disabled = true;
+      function domainFromUrl(url) {
+        try {
+          let d = url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+          return d;
+        } catch { return url; }
       }
 
-      function hideLoading() {
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("analyzeBtn").disabled = false;
+      function showEl(id) { document.getElementById(id).style.display = 'block'; }
+      function hideEl(id) { document.getElementById(id).style.display = 'none'; }
+      function setHtml(id, html) { document.getElementById(id).innerHTML = html; }
+
+      function showError(msg) {
+        setHtml('error', msg);
+        showEl('error');
+        hideEl('result');
+        hideEl('leaderSection');
       }
 
-      function showError(message) {
-        document.getElementById("error").innerText = message;
-        document.getElementById("error").style.display = "block";
-        document.getElementById("result").style.display = "none";
-        document.getElementById("leaderSelection").style.display = "none";
-        document.getElementById("interviewsSection").style.display = "none";
-      }
+      // ---- Single Lead: Analyze ----
+      document.getElementById('analysisForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = document.getElementById('companyUrl').value.trim();
+        if (!input) return;
 
-      function showResult(data) {
-        currentCompanyData = data;
+        const url = normalizeUrl(input);
+        const domain = domainFromUrl(input);
 
-        const badge =
-          data.data_source === "llm_extraction"
-            ? '<span class="status-badge badge-llm">LLM Analysis</span>'
-            : data.data_source === "database"
-            ? '<span class="status-badge badge-db">Database</span>'
-            : data.data_source === "fake_data"
-            ? '<span class="status-badge badge-fake">Sample Data</span>'
-            : '<span class="status-badge badge-cache">Cache</span>';
-
-        let html = `<div><b>Domain:</b> ${data.domain} ${badge}</div>`;
-        html += `<div style='margin-top:8px;'><b>Leaders Found:</b></div>`;
-        html += `<ul class='leaders-list'>`;
-        html += data.leaders
-          .map(
-            (l) =>
-              `<li class='leader-item'><span>${l.name}</span><span class='leader-title'>${l.title}</span></li>`
-          )
-          .join("");
-        html += `</ul>`;
-
-        document.getElementById("result").innerHTML = html;
-        document.getElementById("result").style.display = "block";
-        document.getElementById("error").style.display = "none";
-
-        showLeaderSelection(data.leaders);
-      }
-
-      function showLeaderSelection(leaders) {
-        const container = document.getElementById("leaderCheckboxes");
-        container.innerHTML = "";
-
-        leaders.forEach((leader, index) => {
-          const div = document.createElement("div");
-          div.className = "leader-checkbox";
-          div.innerHTML = `
-            <input type="checkbox" id="leader_${index}" value="${leader.name}" checked>
-            <label for="leader_${index}">
-              <strong>${leader.name}</strong> - ${leader.title}
-            </label>
-          `;
-          container.appendChild(div);
-        });
-
-        document.getElementById("leaderSelection").style.display = "block";
-        updateSearchButton();
-      }
-
-      function updateSearchButton() {
-        const checkboxes = document.querySelectorAll(
-          '#leaderCheckboxes input[type="checkbox"]'
-        );
-        const checkedCount = Array.from(checkboxes).filter(
-          (cb) => cb.checked
-        ).length;
-        const btn = document.getElementById("searchInterviewsBtn");
-
-        btn.disabled = checkedCount === 0;
-        btn.textContent =
-          checkedCount === 0
-            ? "Select at least one leader"
-            : `Search Interviews (${checkedCount} leaders)`;
-      }
-
-      function getSelectedLeaders() {
-        const checkboxes = document.querySelectorAll(
-          '#leaderCheckboxes input[type="checkbox"]:checked'
-        );
-        return Array.from(checkboxes).map((cb) => cb.value);
-      }
-
-      async function searchInterviews() {
-        if (!currentCompanyData) return;
-
-        const selectedLeaders = getSelectedLeaders();
-        if (selectedLeaders.length === 0) {
-          showError("Please select at least one leader");
-          return;
-        }
-
-        const btn = document.getElementById("searchInterviewsBtn");
-        btn.disabled = true;
-        btn.textContent = "Searching...";
+        // Show loading
+        setHtml('loading', 'Analyzing company...');
+        showEl('loading');
+        hideEl('error');
+        hideEl('result');
+        hideEl('leaderSection');
+        hideEl('researchOutput');
+        hideEl('openerOutput');
+        document.getElementById('analyzeBtn').disabled = true;
 
         try {
-          const response = await fetch("/search-interviews", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              leaders: selectedLeaders.map((name) => ({ name })),
-              company_name: currentCompanyData.domain.split(".")[0],
-            }),
+          const resp = await fetch('/analyze', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url }),
           });
+          const data = await resp.json();
 
-          const data = await response.json();
+          if (resp.ok && data.success) {
+            currentCompanyData = data.data;
+            showCompanyResult(data.data);
 
-          if (response.ok && data.success) {
-            showInterviewResults(data.data);
-          } else {
-            showError(data.error || "Failed to search interviews");
-          }
-        } catch (error) {
-          showError("Network error. Please try again.");
-        } finally {
-          btn.disabled = false;
-          btn.textContent = `Search Interviews (${selectedLeaders.length} leaders)`;
-        }
-      }
-
-      function showInterviewResults(data) {
-        const container = document.getElementById("interviewsResults");
-        container.innerHTML = "";
-
-        let totalInterviews = 0;
-
-        Object.entries(data.interviews).forEach(([leaderName, interviews]) => {
-          if (interviews.length > 0) {
-            const leaderDiv = document.createElement("div");
-            leaderDiv.style.marginBottom = "20px";
-
-            let html = `<h5 style="margin: 0 0 8px 0; color: #6366f1;">${leaderName}</h5>`;
-
-            interviews.forEach((interview) => {
-              const date = new Date(
-                interview.published_at
-              ).toLocaleDateString();
-              html += `
-                <div class="interview-item">
-                  <div class="interview-title">${interview.title}</div>
-                  <div class="interview-meta">${interview.channel_title} • ${date}</div>
-                  <a href="${interview.url}" target="_blank" class="interview-link">Watch on YouTube</a>
-                </div>
-              `;
-              totalInterviews++;
-            });
-
-            leaderDiv.innerHTML = html;
-            container.appendChild(leaderDiv);
-          }
-        });
-
-        if (totalInterviews === 0) {
-          container.innerHTML =
-            '<p style="color: #6b7280; text-align: center;">No recent interviews found for the selected leaders.</p>';
-        }
-
-        document.getElementById("interviewsSection").style.display = "block";
-      }
-
-      document
-        .getElementById("analysisForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const input = document.getElementById("companyUrl").value.trim();
-          if (!input) return;
-          const url = normalizeUrl(input);
-          showLoading();
-          try {
-            const response = await fetch("/analyze", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ url }),
-            });
-            const data = await response.json();
-            if (response.ok && data.success) {
-              showResult(data.data);
-            } else {
-              showError(data.error || "An error occurred");
+            // If lead name was provided, auto-kick off research
+            const leadName = document.getElementById('leadName').value.trim();
+            const leadTitle = document.getElementById('leadTitle').value.trim();
+            if (leadName) {
+              doResearch(domain, leadName, leadTitle, data.data.domain.split('.')[0]);
             }
-          } catch (error) {
-            showError("Network error. Please try again.");
-          } finally {
-            hideLoading();
+          } else {
+            showError(data.error || 'An error occurred');
           }
-        });
-
-      document
-        .getElementById("searchInterviewsBtn")
-        .addEventListener("click", searchInterviews);
-
-      document.addEventListener("change", function (e) {
-        if (
-          e.target.type === "checkbox" &&
-          e.target.closest("#leaderCheckboxes")
-        ) {
-          updateSearchButton();
+        } catch (err) {
+          showError('Network error. Please try again.');
+        } finally {
+          hideEl('loading');
+          document.getElementById('analyzeBtn').disabled = false;
         }
       });
+
+      function showCompanyResult(data) {
+        const badgeMap = {
+          llm_extraction: '<span class="status-badge badge-llm">LLM Analysis</span>',
+          database: '<span class="status-badge badge-db">Database</span>',
+          fake_data: '<span class="status-badge badge-fake">Sample Data</span>',
+        };
+        const badge = badgeMap[data.data_source] || '<span class="status-badge badge-cache">Cache</span>';
+
+        setHtml('result', `<div><b>Domain:</b> ${data.domain} ${badge}</div>`);
+        showEl('result');
+
+        // Show leaders with research buttons
+        const list = document.getElementById('leadersList');
+        list.innerHTML = '';
+        data.leaders.forEach((l) => {
+          const li = document.createElement('li');
+          li.className = 'leader-item';
+          li.innerHTML = `
+            <div>
+              <span>${l.name}</span>
+              <span class="leader-title">${l.title}</span>
+            </div>
+            <div class="leader-actions">
+              <button class="leader-btn" onclick="doResearch('${data.domain}', '${l.name.replace(/'/g, "\\'")}', '${l.title.replace(/'/g, "\\'")}', '${data.domain.split('.')[0]}')">
+                Research
+              </button>
+            </div>
+          `;
+          list.appendChild(li);
+        });
+        showEl('leaderSection');
+      }
+
+      // ---- Single Lead: Research ----
+      async function doResearch(domain, leadName, leadTitle, companyName) {
+        setHtml('loading', `Researching ${leadName || domain}... (this may take 30-60 seconds)`);
+        showEl('loading');
+        hideEl('researchOutput');
+        hideEl('openerOutput');
+
+        try {
+          const resp = await fetch('/research', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              company_domain: domain,
+              lead_name: leadName || null,
+              lead_title: leadTitle || null,
+              company_name: companyName || null,
+            }),
+          });
+          const data = await resp.json();
+
+          if (resp.ok && data.success) {
+            currentResearch = data.data;
+            showResearch(data.data, leadName, leadTitle, companyName, domain);
+          } else {
+            showError(data.error || 'Research failed');
+          }
+        } catch (err) {
+          showError('Network error during research.');
+        } finally {
+          hideEl('loading');
+        }
+      }
+
+      function showResearch(r, leadName, leadTitle, companyName, domain) {
+        let html = '';
+
+        // Overview
+        if (r.company_overview) {
+          html += `<div class="research-section">
+            <div class="research-header">Company Overview</div>
+            <div class="research-body">${r.company_overview}</div>
+          </div>`;
+        }
+
+        // Company signals
+        if (r.company_signals && r.company_signals.length) {
+          html += `<div class="research-section">
+            <div class="research-header">Company Signals (${r.company_signals.length})</div>
+            <div class="research-body"><ul class="signal-list">`;
+          r.company_signals.forEach(s => {
+            const sig = typeof s === 'string' ? s : s.signal || JSON.stringify(s);
+            const src = typeof s === 'object' ? (s.source || '') : '';
+            const rel = typeof s === 'object' ? (s.relevance || '') : '';
+            html += `<li class="signal-item">
+              <span class="signal-tag tag-company">Company</span>
+              <strong>${sig}</strong>
+              ${src ? `<br/><span style="color:#6b7280;font-size:0.82rem;">${src}</span>` : ''}
+              ${rel ? `<br/><span style="color:#92400e;font-size:0.82rem;">Why it matters: ${rel}</span>` : ''}
+            </li>`;
+          });
+          html += `</ul></div></div>`;
+        }
+
+        // Person signals
+        if (r.person_signals && r.person_signals.length) {
+          html += `<div class="research-section">
+            <div class="research-header">Person Signals (${r.person_signals.length})</div>
+            <div class="research-body"><ul class="signal-list">`;
+          r.person_signals.forEach(s => {
+            const sig = typeof s === 'string' ? s : s.signal || JSON.stringify(s);
+            const src = typeof s === 'object' ? (s.source || '') : '';
+            html += `<li class="signal-item">
+              <span class="signal-tag tag-person">Person</span>
+              <strong>${sig}</strong>
+              ${src ? `<br/><span style="color:#6b7280;font-size:0.82rem;">${src}</span>` : ''}
+            </li>`;
+          });
+          html += `</ul></div></div>`;
+        }
+
+        // Pain hypotheses
+        if (r.pain_hypotheses && r.pain_hypotheses.length) {
+          html += `<div class="research-section">
+            <div class="research-header">Pain Hypotheses</div>
+            <div class="research-body"><ul class="signal-list">`;
+          r.pain_hypotheses.forEach(p => {
+            html += `<li class="signal-item"><span class="signal-tag tag-pain">Pain</span> ${p}</li>`;
+          });
+          html += `</ul></div></div>`;
+        }
+
+        // Buying signals
+        if (r.buying_signals && r.buying_signals.length) {
+          html += `<div class="research-section">
+            <div class="research-header">Buying Signals</div>
+            <div class="research-body"><ul class="signal-list">`;
+          r.buying_signals.forEach(b => {
+            html += `<li class="signal-item"><span class="signal-tag tag-buying">Buying</span> ${b}</li>`;
+          });
+          html += `</ul></div></div>`;
+        }
+
+        // Conversation hooks
+        if (r.conversation_hooks && r.conversation_hooks.length) {
+          html += `<div class="research-section">
+            <div class="research-header">Conversation Hooks</div>
+            <div class="research-body"><ul class="signal-list">`;
+          r.conversation_hooks.forEach(h => {
+            html += `<li class="signal-item"><span class="signal-tag tag-hook">Hook</span> ${h}</li>`;
+          });
+          html += `</ul></div></div>`;
+        }
+
+        // Industry context
+        if (r.industry_context) {
+          html += `<div class="research-section">
+            <div class="research-header">Industry Context</div>
+            <div class="research-body">${r.industry_context}</div>
+          </div>`;
+        }
+
+        // Generate opener button
+        html += `<button class="btn btn-amber" style="margin-top:16px;"
+                  onclick="doGenerateOpener('${(leadName||'').replace(/'/g, "\\'")}', '${(leadTitle||'').replace(/'/g, "\\'")}', '${(companyName||domain).replace(/'/g, "\\'")}')">
+                  Generate Openers
+                 </button>`;
+
+        setHtml('researchOutput', html);
+        showEl('researchOutput');
+      }
+
+      // ---- Single Lead: Generate Opener ----
+      async function doGenerateOpener(leadName, leadTitle, companyName) {
+        if (!currentResearch) return;
+
+        setHtml('loading', 'Generating personalized openers...');
+        showEl('loading');
+        hideEl('openerOutput');
+
+        try {
+          const resp = await fetch('/generate-opener', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              research: currentResearch,
+              lead_name: leadName,
+              lead_title: leadTitle,
+              company_name: companyName,
+            }),
+          });
+          const data = await resp.json();
+
+          if (resp.ok && data.success) {
+            setHtml('openerOutput', `
+              <div class="research-section">
+                <div class="research-header">Generated Openers</div>
+                <div class="opener-box">${data.data.opener.replace(/\n/g, '<br/>')}</div>
+              </div>
+            `);
+            showEl('openerOutput');
+          } else {
+            showError(data.error || 'Opener generation failed');
+          }
+        } catch (err) {
+          showError('Network error generating opener.');
+        } finally {
+          hideEl('loading');
+        }
+      }
+
+      // ---- Batch Upload ----
+      const uploadZone = document.getElementById('uploadZone');
+      const csvFileInput = document.getElementById('csvFile');
+
+      uploadZone.addEventListener('click', () => csvFileInput.click());
+      uploadZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+      });
+      uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+      uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+          csvFileInput.files = e.dataTransfer.files;
+          handleBatchUpload(e.dataTransfer.files[0]);
+        }
+      });
+      csvFileInput.addEventListener('change', () => {
+        if (csvFileInput.files.length) handleBatchUpload(csvFileInput.files[0]);
+      });
+
+      async function handleBatchUpload(file) {
+        showEl('batchProgress');
+        hideEl('batchResults');
+        setHtml('batchStatus', `Processing ${file.name}... This may take a few minutes.`);
+        document.getElementById('batchProgressBar').style.width = '10%';
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+          // Animate progress bar
+          let progress = 10;
+          const progressInterval = setInterval(() => {
+            if (progress < 85) {
+              progress += Math.random() * 5;
+              document.getElementById('batchProgressBar').style.width = progress + '%';
+            }
+          }, 2000);
+
+          const resp = await fetch('/batch-research', {
+            method: 'POST',
+            body: formData,
+          });
+          const data = await resp.json();
+
+          clearInterval(progressInterval);
+          document.getElementById('batchProgressBar').style.width = '100%';
+
+          if (resp.ok && data.success) {
+            setHtml('batchStatus', `Done! Processed ${data.data.count} leads.`);
+            showBatchResults(data.data.results);
+          } else {
+            setHtml('batchStatus', `Error: ${data.error}`);
+          }
+        } catch (err) {
+          setHtml('batchStatus', 'Network error during batch processing.');
+        }
+      }
+
+      function showBatchResults(results) {
+        let html = `<div class="section-title">Results (${results.length} leads)</div>`;
+
+        results.forEach((r, i) => {
+          const lead = r.lead || {};
+          const name = lead.lead_name || 'Unknown';
+          const company = lead.company_name || lead.company_domain || '';
+          const opener = (r.opener || '').replace(/\n/g, '<br/>');
+
+          html += `<div class="batch-result-item">
+            <div class="batch-result-name">${name}</div>
+            <div class="batch-result-company">${company}</div>
+            ${r.research_summary ? `<div style="margin-top:6px;font-size:0.88rem;color:#374151;">${r.research_summary}</div>` : ''}
+            <div class="opener-box" style="margin-top:8px;">${opener}</div>
+          </div>`;
+        });
+
+        setHtml('batchResults', html);
+        showEl('batchResults');
+      }
     </script>
   </body>
 </html>
