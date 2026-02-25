@@ -20,15 +20,15 @@ class InterviewSearcher:
     
     def __init__(self):
         self.youtube_api_key = os.getenv('YOUTUBE_API_KEY')
-        self.openai_api_key = os.getenv('OPENAI_API_KEY')
-        
+        self.anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
+
         if not self.youtube_api_key:
             print("⚠️  YOUTUBE_API_KEY not found in environment variables")
             print("   Please set your YouTube API key in a .env file")
-            
-        if not self.openai_api_key:
-            print("⚠️  OPENAI_API_KEY not found in environment variables")
-            print("   Please set your OpenAI API key in a .env file")
+
+        if not self.anthropic_api_key:
+            print("⚠️  ANTHROPIC_API_KEY not found in environment variables")
+            print("   Please set your Anthropic API key in a .env file")
     
     def generate_search_queries(self, leader_name: str, company_name: str) -> List[str]:
         """

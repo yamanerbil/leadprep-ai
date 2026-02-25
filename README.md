@@ -156,8 +156,8 @@ leadprep-ai/
 
 ### **Phase 3: AI Analysis (📅 Planned)**
 
-- [ ] OpenAI Whisper transcription
-- [ ] GPT-4 content summarization
+- [ ] Audio transcription
+- [ ] Claude content summarization
 - [ ] Strategic insight generation
 - [ ] Sales conversation preparation
 
@@ -202,7 +202,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **BeautifulSoup4** for web scraping
 - **Flask** for the web framework
-- **OpenAI** for AI capabilities (planned)
+- **Anthropic Claude** for AI capabilities
 - **YouTube Data API** for content discovery (planned)
 
 ## 📞 **Support**
